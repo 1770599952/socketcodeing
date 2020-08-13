@@ -10,7 +10,7 @@ public class Server {
         ServerSocket ss = new ServerSocket();
         ss.bind(new InetSocketAddress("127.0.0.1", 8888));
         while(true) {
-            Socket s = ss.accept(); //阻塞方法
+            Socket s = ss.accept();
             new Thread(() -> {
                 handle(s);
             }).start();

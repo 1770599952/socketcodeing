@@ -1,9 +1,6 @@
 package cn.io.nio;
 
-import sun.misc.Cleaner;
-
 import java.net.Socket;
-import java.util.Arrays;
 
 public class BIOSocketClient {
     public static void main(String[] args) throws Exception {
