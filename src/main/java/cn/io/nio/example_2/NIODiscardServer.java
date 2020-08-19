@@ -40,7 +40,7 @@ public class NIODiscardServer {
                     ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.clear();
                     int readLength = -1;
-                    while ((readLength = socketChannel.read(byteBuffer)) != -1) {
+                    while ((readLength = socketChannel.read(byteBuffer)) != 0) {
                         byteBuffer.flip();
                         String receiveStr = new String(byteBuffer.array(), 0, readLength);
                         System.out.println(receiveStr);
