@@ -9,7 +9,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket();
         ss.bind(new InetSocketAddress("127.0.0.1", 8888));
-        while(true) {
+        while (true) {
             Socket s = ss.accept();
             new Thread(() -> {
                 handle(s);
@@ -26,8 +26,12 @@ public class Server {
             s.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-
+        } finally {
+            try {
+                s.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

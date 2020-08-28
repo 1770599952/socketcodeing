@@ -31,23 +31,41 @@ public class NIODiscardServer {
                 if (selectionKey.isAcceptable()) {
                     ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
                     SocketChannel socketChannel = serverSocketChannel.accept();
-                    socketChannel.configureBlocking(false);
-                    socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
-                } else if (selectionKey.isReadable()) {
-                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                    socketChannel.configureBlocking(false);
+                    socketChannel.configureBlocking(true);
 
                     ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.clear();
+                    String message_from_server = "Hello,Client... " + socketChannel.getLocalAddress();
+                    byteBuffer.put(message_from_server.getBytes());
+                    byteBuffer.flip();
+                    socketChannel.write(byteBuffer);
+                    socketChannel.close();
+                 //   socketChannel.shutdownOutput();
+                 //   socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
+                } else if (selectionKey.isReadable()) {
+                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                    socketChannel.configureBlocking(false);
+                    ByteBuffer byteBuffer = ByteBuffer.allocate(124);
+                    byteBuffer.clear();
                     int readLength = -1;
-                    while ((readLength = socketChannel.read(byteBuffer)) != 0) {
+                    while ((readLength = socketChannel.read(byteBuffer)) > 0) {
                         byteBuffer.flip();
                         String receiveStr = new String(byteBuffer.array(), 0, readLength);
                         System.out.println(receiveStr);
-                        byteBuffer.clear();
-                        byteBuffer.put(receiveStr.getBytes());
-                        socketChannel.write(byteBuffer);
                     }
+
+                //    socketChannel.register(selectionKey.selector(), SelectionKey.OP_WRITE);
+                } else if (selectionKey.isWritable()) {
+                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                    socketChannel.configureBlocking(false);
+                    ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                    byteBuffer.clear();
+                    String message_from_server = "Hello,Client... " + socketChannel.getLocalAddress();
+                    byteBuffer.put(message_from_server.getBytes());
+                    byteBuffer.flip();
+                    socketChannel.write(byteBuffer);
+                    socketChannel.close();
+                    //     socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
                 }
                 iterator.remove();
             }

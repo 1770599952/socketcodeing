@@ -9,7 +9,6 @@ public class Client {
         Socket s = new Socket("127.0.0.1", 8888);
         s.getOutputStream().write("HelloServer".getBytes());
         s.getOutputStream().flush();
-        //s.getOutputStream().close();
         System.out.println("write over, waiting for msg back...");
         byte[] bytes = new byte[1024];
         int len = s.getInputStream().read(bytes);

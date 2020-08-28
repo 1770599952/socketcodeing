@@ -96,7 +96,7 @@ public class EchoClient {
                 socketChannel.close();
             }
             // SocketChannel通道的可写事件注册到Selector中
-            registerChannel(selector, socketChannel, SelectionKey.OP_WRITE);
+          //  registerChannel(selector, socketChannel, SelectionKey.OP_WRITE);
         }
         // 通道的可写事件就绪
         if (key.isWritable()) {
